@@ -1,10 +1,12 @@
 package org.launchcode.controllers;
 
+import org.launchcode.models.*;
 import org.launchcode.models.forms.JobForm;
 import org.launchcode.models.data.JobData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -19,12 +21,11 @@ public class JobController {
 
     private JobData jobData = JobData.getInstance();
 
-    // The detail display for a given Job at URLs like /job?id=17
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String index(Model model, int id) {
 
-        // TODO #1 - get the Job with the given ID and pass it into the view
-
+        Job thisJob = jobData.findById(id);
+        model.addAttribute("job", thisJob);
         return "job-detail";
     }
 
@@ -35,13 +36,22 @@ public class JobController {
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String add(Model model, @Valid JobForm jobForm, Errors errors) {
+    public String add(@ModelAttribute Job newJob, Model model, @Valid JobForm jobForm, Errors errors) {
+        if (errors.hasErrors()) {
+            return "new-job";
+        }
 
-        // TODO #6 - Validate the JobForm model, and if valid, create a
-        // new Job and add it to the jobData data store. Then
-        // redirect to the job detail view for the new Job.
+        String thisName = jobForm.getName();
 
-        return "";
+        Location thisLocation = jobData.getLocations().findById(jobForm.getLocationId());
+        Employer thisEmployer = jobData.getEmployers().findById(jobForm.getEmployerId());
+        CoreCompetency thisCoreCompetency = jobData.getCoreCompetencies().findById(jobForm.getCoreCompetencyId());
+        PositionType thisPositionType = jobData.getPositionTypes().findById(jobForm.getPositionTypeId());
 
+        Job thisJob = new Job (thisName, thisEmployer, thisLocation, thisPositionType, thisCoreCompetency);
+
+        jobData.add(thisJob);
+
+        return "redirect:/job/?id=" + thisJob.getId();
     }
 }

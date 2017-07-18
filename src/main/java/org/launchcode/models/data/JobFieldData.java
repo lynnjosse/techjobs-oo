@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class JobFieldData<T extends JobField> {
 
-    private ArrayList<T> allFields = new ArrayList<>();
+    public ArrayList<T> allFields = new ArrayList<>();
 
     public ArrayList<T> findAll() {
         return allFields;

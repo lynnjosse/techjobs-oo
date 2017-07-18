@@ -16,33 +16,45 @@ import java.util.ArrayList;
 public class JobForm {
 
     @NotNull
-    @Size(min=1, message = "Name may not be empty")
+    @Size(min=4, message = "Name must have at least 4 characters")
     private String name;
 
-    @NotNull
     private int employerId;
 
-    /*
-        TODO #3 - Included other fields needed to create a job,
-        with correct validation attributes and display names.
-        Don't forget to add getters and setters
-     */
+    private String employer;
 
-    private ArrayList<Employer> employers;
-    private ArrayList<Location> locations;
-    private ArrayList<CoreCompetency> coreCompetencies;
-    private ArrayList<PositionType> positionTypes;
+    private String location;
 
-    public JobForm() {
+    private int locationId;
 
-        JobData jobData = JobData.getInstance();
+    private String positionType;
 
-        /*
-            TODO #4 - populate the other ArrayList collections needed in the view
-        */
+    private int positionTypeId;
 
-        employers = jobData.getEmployers().findAll();
+    private String coreCompetency;
 
+    public int getPositionTypeId() {
+        return positionTypeId;
+    }
+
+    public void setPositionTypeId(int positionTypeId) {
+        this.positionTypeId = positionTypeId;
+    }
+
+    public int getCoreCompetencyId() {
+        return coreCompetencyId;
+    }
+
+    public void setCoreCompetencyId(int coreCompetencyId) {
+        this.coreCompetencyId = coreCompetencyId;
+    }
+
+    private int coreCompetencyId;
+
+    public String getCoreCompetency() { return coreCompetency; }
+
+    public void setCoreCompetency(String coreCompetency) {
+        this.coreCompetency = coreCompetency;
     }
 
     public String getName() {
@@ -59,6 +71,39 @@ public class JobForm {
 
     public void setEmployerId(int employerId) {
         this.employerId = employerId;
+    }
+
+    public String getEmployer() { return employer; }
+
+    public void setEmployer(String employer) { this.employer = employer; }
+
+    public String getLocation() { return location; }
+
+    public void setLocation(String location) { this.location = location; }
+
+    public int getLocationId() { return locationId; }
+
+    public void setLocationId(int locationId){this.locationId = locationId;}
+
+    public String getPositionType() { return positionType; }
+
+    public void setPositionType(String positionType) {
+        this.positionType = positionType;
+    }
+
+    private ArrayList<Employer> employers;
+    private ArrayList<Location> locations;
+    private ArrayList<CoreCompetency> coreCompetencies;
+    private ArrayList<PositionType> positionTypes;
+
+    public JobForm() {
+
+        JobData jobData = JobData.getInstance();
+
+        employers = jobData.getEmployers().findAll();
+        locations = jobData.getLocations().findAll();
+        coreCompetencies = jobData.getCoreCompetencies().findAll();
+        positionTypes = jobData.getPositionTypes().findAll();
     }
 
     public ArrayList<Employer> getEmployers() {
